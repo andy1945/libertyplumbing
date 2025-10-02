@@ -1,24 +1,29 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
-import heroPlumbing from "@/assets/hero-plumbing.jpg";
+import { useState, useEffect } from "react";
+import bg1 from "@/assets/bg1.jpg";
+import bg2 from "@/assets/bg2.jpg";
+import bg3 from "@/assets/bg3.jpg";
 
 const slides = [
   {
     title: "We Provide Quality Plumbing Services",
     description: "We are a company providing a wide range of maintenance and many other services needed to make your life comfortable and happy. Our high-class experts fix any malfunction.",
     buttonText: "Contact us",
+    bgImage: bg1,
   },
   {
     title: "Electrical Services & maintenance",
     description: "We provide you with the system that helps to sustain you with electricity in all the seasons throughout the year.",
     buttonText: "Request for a free quote!",
+    bgImage: bg2,
   },
   {
     title: "Expert Advice from our Experienced Staff",
     description: "Our company offers a complete range of aftercare products and services and we are set up to deliver a service of high quality for high volume.",
     buttonText: "Request for a free quote!",
+    bgImage: bg3,
   },
 ];
 
@@ -33,14 +38,24 @@ export const Hero = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
+  useEffect(() => {
+    const slideInterval = setInterval(nextSlide, 5000);
+    return () => clearInterval(slideInterval);
+  }, []);
+
   return (
     <section className="relative h-[500px] md:h-[600px] overflow-hidden">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroPlumbing})` }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/70 to-transparent" />
+      {/* Background Images */}
+      <div className="absolute inset-0">
+        {slides.map((slide, index) => (
+          <div
+            key={slide.bgImage + currentSlide}
+            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-3000 ${
+              index === currentSlide ? 'opacity-100 z-10 zoom-out-effect' : 'opacity-0 z-0'
+            }`}
+            style={{ backgroundImage: `url(${slide.bgImage})` }}
+          />
+        ))}
       </div>
 
       {/* Content */}

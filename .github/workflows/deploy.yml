@@ -1,0 +1,39 @@
+name: build-and-deploy-to-cpanel
+on:
+    push:
+        branches: ["main"]
+
+permissions:
+    contents: read
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Use Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "18" # match your project's Node version (change if needed)
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build
+              run: npm run build
+
+            - name: Deploy to cPanel via FTP/FTPS
+              uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+              with:
+                  server: ${{ secrets.FTP_HOST }}
+                  username: ${{ secrets.FTP_USERNAME }}
+                  password: ${{ secrets.FTP_PASSWORD }}
+                  port: ${{ secrets.FTP_PORT }} # optional
+                  protocol: ${{ secrets.FTP_PROTOCOL }} # optional, e.g. 'ftps'
+                  local-dir: ./dist/ # upload the Vite build output
+                  #                 server-dir: public_html/ # adjust to your document root or subfolder
+                  server-dir: libertyplumbing.us/apptest
+                  dry-run: false

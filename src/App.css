@@ -40,3 +40,16 @@
 .read-the-docs {
   color: #888;
 }
+
+@keyframes zoom-out {
+  from {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.zoom-out-effect {
+  animation: zoom-out 5s ease-out;
+}

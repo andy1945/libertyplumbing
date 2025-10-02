@@ -2,7 +2,7 @@ import { Phone, Mail, MapPin, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import logoIcon from "@/assets/logo-icon.png";
+import logoIcon from "@/assets/hero-plumbing.png";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,10 +30,18 @@ export const Navbar = () => {
           <div className="flex flex-wrap items-center justify-between py-4 gap-4">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">
-              <img src={logoIcon} alt="Liberty Plumbing" className="h-16 w-16" />
+              <img
+                src={logoIcon}
+                alt="Liberty Plumbing"
+                className="h-16 w-16"
+              />
               <div>
-                <h1 className="text-xl md:text-2xl font-bold text-primary">LIBERTY</h1>
-                <p className="text-xs text-muted-foreground">PLUMBING AND ELECTRICALS</p>
+                <h1 className="text-xl md:text-2xl font-bold text-primary">
+                  LIBERTY
+                </h1>
+                <p className="text-xs text-muted-foreground">
+                  PLUMBING AND ELECTRICALS
+                </p>
               </div>
             </Link>
 
@@ -42,22 +50,32 @@ export const Navbar = () => {
               <div className="flex items-center gap-3">
                 <Phone className="h-10 w-10 text-primary" />
                 <div>
-                  <p className="text-sm font-semibold">Call Us: +1 (267) 688-8612</p>
-                  <p className="text-xs text-muted-foreground">Monday–Saturday, 8:00 AM – 8:00 PM</p>
+                  <p className="text-sm font-semibold">
+                    Call Us: +1 (267) 688-8612
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Monday–Saturday, 8:00 AM – 8:00 PM
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-10 w-10 text-primary" />
                 <div>
                   <p className="text-sm font-semibold">Mail us for help:</p>
-                  <p className="text-xs text-muted-foreground">info@libertyplumbing.us</p>
+                  <p className="text-xs text-muted-foreground">
+                    info@libertyplumbing.us
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <MapPin className="h-10 w-10 text-primary" />
                 <div>
-                  <p className="text-sm font-semibold">Liberty Plumbing and Electricals,</p>
-                  <p className="text-xs text-muted-foreground">Philadelphia, PA</p>
+                  <p className="text-sm font-semibold">
+                    Liberty Plumbing and Electricals,
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Philadelphia, PA
+                  </p>
                 </div>
               </div>
             </div>
@@ -97,7 +115,11 @@ export const Navbar = () => {
                 className="md:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </button>
             </div>
 
@@ -118,7 +140,10 @@ export const Navbar = () => {
                   ))}
                   <li>
                     <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
-                      <Button size="lg" className="w-full bg-primary hover:bg-primary/90">
+                      <Button
+                        size="lg"
+                        className="w-full bg-primary hover:bg-primary/90"
+                      >
                         Request for a free Quote!
                       </Button>
                     </Link>
