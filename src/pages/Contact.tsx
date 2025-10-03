@@ -1,186 +1,317 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/components/ui/use-toast";
+import { Phone, Mail, MapPin, Loader2 } from "lucide-react";
+import plumberImage from "@/assets/plumber-transparent-reverse.webp";
 import { useState } from "react";
 
-const Contact = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    service: "",
-    message: "",
+const formSchema = z.object({
+  firstName: z.string().min(2, "First name must be at least 2 characters."),
+  lastName: z.string().min(2, "Last name must be at least 2 characters."),
+  email: z.string().email("Invalid email address.").optional().or(z.literal("")),
+  phone: z.string().min(10, "Phone number must be at least 10 digits."),
+  reason: z.string({ required_error: "Please select a reason." }),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters.")
+    .max(500),
+});
+
+const ContactPage = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      message: "",
+    },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you as soon as possible.",
-    });
-    setFormData({ name: "", email: "", phone: "", service: "", message: "" });
-  };
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("https://beta.libertyplumbing.us/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstname: values.firstName,
+          lastname: values.lastName,
+          email: values.email,
+          phone: values.phone,
+          service: values.reason,
+          message: values.message,
+        }),
+      });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+      if (response.ok) {
+        toast({
+          title: "Message Sent!",
+          description:
+            "We've received your message and will get back to you shortly.",
+        });
+        form.reset();
+      } else {
+        toast({
+          title: "Error",
+          description: "Something went wrong. Please try again later.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
-    <div className="min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
-      <main>
-        {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-            <p className="text-xl max-w-2xl mx-auto opacity-90">
-              Get in touch for a free quote or emergency service
+      <main className="flex-grow">
+        {/* Hero Banner */}
+        <section
+          className="relative bg-cover bg-center py-24 px-4 sm:px-6 lg:px-8"
+          style={{ backgroundImage: "url('/src/assets/bunner.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="relative max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white">
+              Contact Us
+            </h1>
+            <p className="mt-4 text-lg text-gray-200">
+              We're here to handle your plumbing and electrical issues with
+              professionalism and care
             </p>
           </div>
         </section>
 
-        {/* Contact Form & Info */}
+        {/* Three Column Info Section */}
         <section className="py-16">
-          <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-3 gap-8">
-              {/* Contact Form */}
-              <div className="lg:col-span-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-2xl">Request a Free Quote</CardTitle>
-                    <p className="text-muted-foreground">Fill out the form below and we'll get back to you shortly</p>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">Full Name *</label>
-                          <Input
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            placeholder="John Doe"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">Email *</label>
-                          <Input
-                            name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="john@example.com"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">Phone Number *</label>
-                          <Input
-                            name="phone"
-                            type="tel"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            placeholder="+1 (267) 123-4567"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium mb-2 block">Service Needed</label>
-                          <Input
-                            name="service"
-                            value={formData.service}
-                            onChange={handleChange}
-                            placeholder="Plumbing, Electrical, etc."
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium mb-2 block">Message *</label>
-                        <Textarea
-                          name="message"
-                          value={formData.message}
-                          onChange={handleChange}
-                          placeholder="Please describe your service needs..."
-                          rows={6}
-                          required
-                        />
-                      </div>
-                      <Button type="submit" size="lg" className="w-full bg-primary hover:bg-primary/90">
-                        Send Message
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
+          <div className="container mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              <div className="flex items-start gap-4">
+                <div className="bg-primary text-primary-foreground p-4 rounded-full flex items-center justify-center flex-shrink-0">
+                  <MapPin className="h-8 w-8" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold">Our Office address:</h3>
+                  <p className="text-gray-600">
+                    Liberty Plumbing and Electricals, Philadelphia, PA.
+                  </p>
+                </div>
               </div>
-
-              {/* Contact Information */}
-              <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Contact Information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <Phone className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold">Phone</p>
-                        <p className="text-sm text-muted-foreground">+1 (267) 688-8612</p>
-                        <p className="text-xs text-muted-foreground mt-1">24/7 Emergency Service</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Mail className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold">Email</p>
-                        <p className="text-sm text-muted-foreground">info@libertyplumbing.us</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <MapPin className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold">Address</p>
-                        <p className="text-sm text-muted-foreground">Philadelphia, PA</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Clock className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                      <div>
-                        <p className="font-semibold">Business Hours</p>
-                        <p className="text-sm text-muted-foreground">Monday - Saturday</p>
-                        <p className="text-sm text-muted-foreground">8:00 AM - 8:00 PM</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-primary text-primary-foreground">
-                  <CardContent className="pt-6">
-                    <h3 className="font-semibold text-lg mb-2">Emergency Service</h3>
-                    <p className="text-sm opacity-90 mb-4">
-                      Need immediate assistance? We're available 24/7 for emergency plumbing and electrical services.
-                    </p>
-                    <Button variant="secondary" size="lg" className="w-full">
-                      Call Now: (267) 688-8612
-                    </Button>
-                  </CardContent>
-                </Card>
+              <div className="flex items-start gap-4">
+                <div className="bg-primary text-primary-foreground p-4 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Phone className="h-8 w-8" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold">Call for help:</h3>
+                  <a
+                    href="tel:+12676888612"
+                    className="text-lg text-gray-800 hover:text-primary"
+                  >
+                    +1 (267) 688-8612
+                  </a>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="bg-primary text-primary-foreground p-4 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Mail className="h-8 w-8" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold">Mail for any inquries:</h3>
+                  <a
+                    href="mailto:Info@libertyplumbing.us"
+                    className="text-lg text-gray-800 hover:text-primary"
+                  >
+                    Info@libertyplumbing.us
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </section>
+
+        {/* Main Content */}
+        <div className="py-12">
+          <div className="max-w-6xl w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="grid lg:grid-cols-2">
+              {/* Left Side: Image */}
+              <div className="hidden lg:flex items-center justify-center bg-gray-100">
+                <img
+                  src={plumberImage}
+                  alt="Plumber"
+                  className="max-w-full h-auto"
+                />
+              </div>
+
+              {/* Right Side: Contact Form */}
+              <div className="p-8 lg:p-12">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                  Request for a fee quote now!
+                </h2>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4"
+                  >
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="firstName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>First Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="John" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="lastName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Last Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Doe" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="john.doe@example.com"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="(123) 456-7890" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="reason"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Reason for Contact</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a reason" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="schedule-service">
+                                Schedule Service
+                              </SelectItem>
+                              <SelectItem value="question">Question</SelectItem>
+                              <SelectItem value="feedback">Feedback</SelectItem>
+                              <SelectItem value="emergency-service">
+                                Emergency Service
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="message"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Message</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              placeholder="Tell us how we can help..."
+                              className="resize-none"
+                              rows={5}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="submit"
+                      className="w-full bg-primary hover:bg-primary/90"
+                      size="lg"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        "Send now"
+                      )}
+                    </Button>
+                  </form>
+                </Form>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
       <Footer />
     </div>
   );
 };
 
-export default Contact;
+export default ContactPage;
