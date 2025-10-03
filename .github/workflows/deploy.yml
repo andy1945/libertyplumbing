@@ -35,5 +35,5 @@ jobs:
           protocol: ${{ secrets.FTP_PROTOCOL }} # optional, e.g. 'ftps'
           local-dir: ./dist/ # upload the Vite build output
           #                 server-dir: public_html/ # adjust to your document root or subfolder
-          server-dir: public_html/
+          server-dir: /
           dry-run: false
