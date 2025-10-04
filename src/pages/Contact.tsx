@@ -42,6 +42,7 @@ const formSchema = z.object({
 
 const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,6 +51,7 @@ const ContactPage = () => {
       email: "",
       phone: "",
       message: "",
+      reason: "",
     },
   });
 
@@ -57,7 +59,7 @@ const ContactPage = () => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/send-email`,
+        "https://beta.libertyplumbing.us/api/send-email",
         {
           method: "POST",
           headers: {
@@ -79,7 +81,12 @@ const ContactPage = () => {
         console.log(`${name}: ${value}`);
       });
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
       if (response.ok && data.success) {
         toast({
@@ -91,7 +98,8 @@ const ContactPage = () => {
       } else {
         toast({
           title: "Error",
-          description: "Something went wrong. Please try again later.",
+          description:
+            data.message || "Something went wrong. Please try again later.",
           variant: "destructive",
         });
       }
@@ -123,12 +131,12 @@ const ContactPage = () => {
             </h1>
             <p className="mt-4 text-lg text-gray-200">
               We're here to handle your plumbing and electrical issues with
-              professionalism and care
+              professionalism and care.
             </p>
           </div>
         </section>
 
-        {/* Three Column Info Section */}
+        {/* Info Section */}
         <section className="py-16">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -162,7 +170,7 @@ const ContactPage = () => {
                   <Mail className="h-8 w-8" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">Mail for any inquries:</h3>
+                  <h3 className="text-xl font-bold">Mail for any inquiries:</h3>
                   <a
                     href="mailto:Info@libertyplumbing.us"
                     className="text-lg text-gray-800 hover:text-primary"
@@ -175,7 +183,7 @@ const ContactPage = () => {
           </div>
         </section>
 
-        {/* Main Content */}
+        {/* Contact Form */}
         <div className="py-12">
           <div className="max-w-6xl w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
             <div className="grid lg:grid-cols-2">
@@ -188,10 +196,10 @@ const ContactPage = () => {
                 />
               </div>
 
-              {/* Right Side: Contact Form */}
+              {/* Right Side: Form */}
               <div className="p-8 lg:p-12">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                  Request for a fee quote now!
+                  Request for a free quote now!
                 </h2>
                 <Form {...form}>
                   <form
