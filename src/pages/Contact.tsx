@@ -27,15 +27,12 @@ import plumberImage from "@/assets/plumber-transparent-reverse.webp";
 import { useState } from "react";
 
 const formSchema = z.object({
-  firstName: z.string().min(2, "First name must be at least 2 characters."),
-  lastName: z.string().min(2, "Last name must be at least 2 characters."),
+  firstName: z.string().min(1, { message: "First name is required." }),
+  lastName: z.string().min(1, { message: "Last name is required." }),
   email: z.string().email("Invalid email address.").optional().or(z.literal("")),
-  phone: z.string().min(10, "Phone number must be at least 10 digits."),
-  reason: z.string({ required_error: "Please select a reason." }),
-  message: z
-    .string()
-    .min(10, "Message must be at least 10 characters.")
-    .max(500),
+  phone: z.string().min(1, { message: "Phone number is required." }),
+  reason: z.string().min(1, { message: "Please select a reason." }),
+  message: z.string().min(1, { message: "Message is required." }),
 });
 
 const ContactPage = () => {
@@ -54,7 +51,7 @@ const ContactPage = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      const response = await fetch("https://beta.libertyplumbing.us/api/send-email", {
+      const response = await fetch("/api/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,6 +64,11 @@ const ContactPage = () => {
           service: values.reason,
           message: values.message,
         }),
+      });
+
+      console.log("Response Headers:");
+      response.headers.forEach((value, name) => {
+        console.log(`${name}: ${value}`);
       });
 
       if (response.ok) {
@@ -84,6 +86,7 @@ const ContactPage = () => {
         });
       }
     } catch (error) {
+      console.error("Error submitting form:", error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again later.",
