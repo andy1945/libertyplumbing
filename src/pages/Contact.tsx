@@ -24,13 +24,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { Phone, Mail, MapPin, Loader2 } from "lucide-react";
 import plumberImage from "@/assets/plumber-transparent-reverse.webp";
-import bannerBg from '@/assets/bunner.jpg';
+import bannerBg from "@/assets/bunner.jpg";
 import { useState } from "react";
 
 const formSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required." }),
   lastName: z.string().min(1, { message: "Last name is required." }),
-  email: z.string().email("Invalid email address.").optional().or(z.literal("")),
+  email: z
+    .string()
+    .email("Invalid email address.")
+    .optional()
+    .or(z.literal("")),
   phone: z.string().min(1, { message: "Phone number is required." }),
   reason: z.string().min(1, { message: "Please select a reason." }),
   message: z.string().min(1, { message: "Message is required." }),
@@ -52,27 +56,32 @@ const ContactPage = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/send-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstname: values.firstName,
-          lastname: values.lastName,
-          email: values.email,
-          phone: values.phone,
-          service: values.reason,
-          message: values.message,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/send-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstname: values.firstName,
+            lastname: values.lastName,
+            email: values.email,
+            phone: values.phone,
+            service: values.reason,
+            message: values.message,
+          }),
+        }
+      );
 
       console.log("Response Headers:");
       response.headers.forEach((value, name) => {
         console.log(`${name}: ${value}`);
       });
 
-      if (response.ok) {
+      const data = await response.json();
+
+      if (response.ok && data.success) {
         toast({
           title: "Message Sent!",
           description:
@@ -221,17 +230,17 @@ const ContactPage = () => {
                       control={form.control}
                       name="email"
                       render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="john.doe@example.com"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="john.doe@example.com"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                     <FormField
                       control={form.control}
