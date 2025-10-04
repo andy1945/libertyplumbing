@@ -24,6 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { Phone, Mail, MapPin, Loader2 } from "lucide-react";
 import plumberImage from "@/assets/plumber-transparent-reverse.webp";
+import bannerBg from '@/assets/bunner.jpg';
 import { useState } from "react";
 
 const formSchema = z.object({
@@ -104,7 +105,7 @@ const ContactPage = () => {
         {/* Hero Banner */}
         <section
           className="relative bg-cover bg-center py-24 px-4 sm:px-6 lg:px-8"
-          style={{ backgroundImage: "url('/src/assets/bunner.jpg')" }}
+          style={{ backgroundImage: `url(${bannerBg})` }}
         >
           <div className="absolute inset-0 bg-black/50"></div>
           <div className="relative max-w-4xl mx-auto text-center">
@@ -220,17 +221,17 @@ const ContactPage = () => {
                       control={form.control}
                       name="email"
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="john.doe@example.com"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="john.doe@example.com"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                     />
                     <FormField
                       control={form.control}
