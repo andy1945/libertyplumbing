@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import Banner from "@/components/Banner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, Heart, TrendingUp, Award, Briefcase, GraduationCap } from "lucide-react";
@@ -56,15 +57,10 @@ const Careers = () => {
     <div className="min-h-screen">
       <Navbar />
       <main>
-        {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Join Our Team</h1>
-            <p className="text-xl max-w-2xl mx-auto opacity-90">
-              Build your career with Philadelphia's leading plumbing and electrical service provider
-            </p>
-          </div>
-        </section>
+        <Banner 
+          title="Join Our Team"
+          subtitle="Build your career with Philadelphia's leading plumbing and electrical service provider"
+        />
 
         {/* Why Work With Us */}
         <section className="py-16">

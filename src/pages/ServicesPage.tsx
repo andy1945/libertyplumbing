@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import Banner from "@/components/Banner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Wrench, Zap, Hammer, Droplets, Lightbulb, Thermometer, Plug, Wrench as PipeIcon, Cog } from "lucide-react";
 
@@ -35,15 +36,10 @@ const ServicesPage = () => {
     <div className="min-h-screen">
       <Navbar />
       <main>
-        {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
-            <p className="text-xl max-w-2xl mx-auto opacity-90">
-              Comprehensive plumbing, electrical, and maintenance solutions for your home or business
-            </p>
-          </div>
-        </section>
+        <Banner 
+          title="Our Services"
+          subtitle="Comprehensive plumbing, electrical, and maintenance solutions for your home or business"
+        />
 
         {/* Plumbing Services */}
         <section className="py-16">

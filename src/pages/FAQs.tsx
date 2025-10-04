@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import Banner from "@/components/Banner";
 import {
   Accordion,
   AccordionContent,
@@ -55,15 +56,10 @@ const FAQs = () => {
     <div className="min-h-screen">
       <Navbar />
       <main>
-        {/* Hero Section */}
-        <section className="bg-primary text-primary-foreground py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h1>
-            <p className="text-xl max-w-2xl mx-auto opacity-90">
-              Find answers to common questions about our plumbing and electrical services
-            </p>
-          </div>
-        </section>
+        <Banner 
+          title="Frequently Asked Questions"
+          subtitle="Find answers to common questions about our plumbing and electrical services"
+        />
 
         {/* FAQs */}
         <section className="py-16">
