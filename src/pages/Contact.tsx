@@ -4,6 +4,7 @@ import bannerBg from "@/assets/bunner.jpg";
 import { StepForm } from "@/components/ui/StepForm";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import ElectricBorder from "@/components/ui/ElectricBorder";
 
 const ContactPage = () => {
   return (
@@ -88,12 +89,20 @@ const ContactPage = () => {
               </div>
 
               {/* Right Side: Form */}
-              <div className="p-8 lg:p-12">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-                  Request for a free quote now!
-                </h2>
-                <StepForm />
-              </div>
+              <ElectricBorder
+                color="#7df9ff"
+                speed={1}
+                chaos={0.5}
+                thickness={2}
+                style={{ borderRadius: 16 }}
+              >
+                <div className="p-8 lg:p-12">
+                  <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+                    Request for a free quote now!
+                  </h2>
+                  <StepForm />
+                </div>
+              </ElectricBorder>
             </div>
           </div>
         </div>

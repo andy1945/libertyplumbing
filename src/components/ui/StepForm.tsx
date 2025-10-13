@@ -47,6 +47,16 @@ const formSchema = z.object({
   otherPlumbingService: z.string().optional(),
   fixtureService: z.string().optional(),
   isEmergency: z.string().optional(),
+  electricalService: z.string().optional(),
+  lightsSwitchesService: z.string().optional(),
+  wiringPanelService: z.string().optional(),
+  electricalRooms: z.array(z.string()).optional(),
+  hasBoughtCharger: z.string().optional(),
+  moreOptions: z.string().optional(),
+  generatorWork: z.string().optional(),
+  fanType: z.string().optional(),
+  smartHomeWork: z.string().optional(),
+  lightningProtectionWork: z.string().optional(),
 });
 
 export const StepForm = () => {
@@ -59,6 +69,16 @@ export const StepForm = () => {
   const [otherPlumbingService, setOtherPlumbingService] = useState("");
   const [fixtureService, setFixtureService] = useState("");
   const [isEmergency, setIsEmergency] = useState("");
+  const [electricalService, setElectricalService] = useState("");
+  const [lightsSwitchesService, setLightsSwitchesService] = useState("");
+  const [wiringPanelService, setWiringPanelService] = useState("");
+  const [electricalRooms, setElectricalRooms] = useState<string[]>([]);
+  const [hasBoughtCharger, setHasBoughtCharger] = useState("");
+  const [moreOptions, setMoreOptions] = useState("");
+  const [generatorWork, setGeneratorWork] = useState("");
+  const [fanType, setFanType] = useState("");
+  const [smartHomeWork, setSmartHomeWork] = useState("");
+  const [lightningProtectionWork, setLightningProtectionWork] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -78,6 +98,16 @@ export const StepForm = () => {
       otherPlumbingService: "",
       fixtureService: "",
       isEmergency: "",
+      electricalService: "",
+      lightsSwitchesService: "",
+      wiringPanelService: "",
+      electricalRooms: [],
+      hasBoughtCharger: "",
+      moreOptions: "",
+      generatorWork: "",
+      fanType: "",
+      smartHomeWork: "",
+      lightningProtectionWork: "",
     },
   });
 
@@ -101,6 +131,16 @@ export const StepForm = () => {
             otherPlumbingService,
             fixtureService,
             isEmergency,
+            electricalService,
+            lightsSwitchesService,
+            wiringPanelService,
+            electricalRooms,
+            hasBoughtCharger,
+            moreOptions,
+            generatorWork,
+            fanType,
+            smartHomeWork,
+            lightningProtectionWork,
           }),
         }
       );
@@ -120,6 +160,16 @@ export const StepForm = () => {
         });
         form.reset();
         setStep(1);
+        setElectricalService("");
+        setLightsSwitchesService("");
+        setWiringPanelService("");
+        setElectricalRooms([]);
+        setHasBoughtCharger("");
+        setMoreOptions("");
+        setGeneratorWork("");
+        setFanType("");
+        setSmartHomeWork("");
+        setLightningProtectionWork("");
       } else {
         toast({
           title: "Error",
@@ -148,6 +198,8 @@ export const StepForm = () => {
   const goToNextStep = () => {
     if (serviceType === "Plumbing") {
       setStep(2);
+    } else if (serviceType === "Electrical") {
+      setStep(6);
     } else {
       setStep(5);
     }
@@ -158,6 +210,21 @@ export const StepForm = () => {
     form.setValue("plumbingService", service);
   };
 
+  const handleElectricalServiceSelection = (service: string) => {
+    setElectricalService(service);
+    form.setValue("electricalService", service);
+  };
+
+  const handleLightsSwitchesServiceSelection = (service: string) => {
+    setLightsSwitchesService(service);
+    form.setValue("lightsSwitchesService", service);
+  };
+
+  const handleWiringPanelServiceSelection = (service: string) => {
+    setWiringPanelService(service);
+    form.setValue("wiringPanelService", service);
+  };
+
   const goToNextStepFromPlumbing = () => {
     if (
       plumbingService === "Faucets, fixtures, drains or pipes" ||
@@ -166,6 +233,36 @@ export const StepForm = () => {
       plumbingService === "Other"
     ) {
       setStep(3);
+    } else {
+      setStep(5);
+    }
+  };
+
+  const goToNextStepFromElectrical = () => {
+    if (electricalService === "Lights, outlets, or switches") {
+      setStep(7);
+    } else if (electricalService === "Electrical wiring / panel") {
+      setStep(8);
+    } else if (electricalService === "Electrical for addition / remodel") {
+      setStep(9);
+    } else if (electricalService === "Electric vehicle charger installation") {
+      setStep(10);
+    } else if (electricalService === "More options") {
+      setStep(11);
+    } else {
+      setStep(5);
+    }
+  };
+
+  const goToNextStepFromMoreOptions = () => {
+    if (moreOptions === "Generator") {
+      setStep(12);
+    } else if (moreOptions === "Fan") {
+      setStep(13);
+    } else if (moreOptions === "Smart home system") {
+      setStep(14);
+    } else if (moreOptions === "Lightning rod/lightning protection") {
+      setStep(15);
     } else {
       setStep(5);
     }
@@ -214,6 +311,44 @@ export const StepForm = () => {
     form.setValue("isEmergency", value);
   };
 
+  const handleElectricalRoomsSelection = (room: string) => {
+    const newRooms = electricalRooms.includes(room)
+      ? electricalRooms.filter((r) => r !== room)
+      : [...electricalRooms, room];
+    setElectricalRooms(newRooms);
+    form.setValue("electricalRooms", newRooms);
+  };
+
+  const handleHasBoughtChargerSelection = (value: string) => {
+    setHasBoughtCharger(value);
+    form.setValue("hasBoughtCharger", value);
+  };
+
+  const handleMoreOptionsSelection = (value: string) => {
+    setMoreOptions(value);
+    form.setValue("moreOptions", value);
+  };
+
+  const handleGeneratorWorkSelection = (value: string) => {
+    setGeneratorWork(value);
+    form.setValue("generatorWork", value);
+  };
+
+  const handleFanTypeSelection = (value: string) => {
+    setFanType(value);
+    form.setValue("fanType", value);
+  };
+
+  const handleSmartHomeWorkSelection = (value: string) => {
+    setSmartHomeWork(value);
+    form.setValue("smartHomeWork", value);
+  };
+
+  const handleLightningProtectionWorkSelection = (value: string) => {
+    setLightningProtectionWork(value);
+    form.setValue("lightningProtectionWork", value);
+  };
+
   const renderRadioGroup = (
     options: string[],
     value: string,
@@ -236,6 +371,38 @@ export const StepForm = () => {
           </div>
         ))}
       </RadioGroup>
+    </Card>
+  );
+
+  const renderCheckboxGroup = (
+    options: string[],
+    value: string[],
+    onValueChange: (value: string) => void
+  ) => (
+    <Card className="w-full">
+      <div className="p-4">
+        {options.map((option, index) => (
+          <div key={option}>
+            <Label
+              htmlFor={option}
+              className={`flex items-center p-4 rounded-lg cursor-pointer ${
+                value.includes(option) ? "bg-gray-100" : ""
+              }`}
+            >
+              <input
+                type="checkbox"
+                id={option}
+                value={option}
+                checked={value.includes(option)}
+                onChange={() => onValueChange(option)}
+                className="mr-2"
+              />
+              {option}
+            </Label>
+            {index < options.length - 1 && <Separator />}
+          </div>
+        ))}
+      </div>
     </Card>
   );
 
@@ -514,8 +681,369 @@ export const StepForm = () => {
     }
   }
 
+  if (step === 6) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          What do you need help with?
+        </h3>
+        {renderRadioGroup(
+          [
+            "Lights, outlets, or switches",
+            "Electrical wiring / panel",
+            "Electrical for addition / remodel",
+            "Electric vehicle charger installation",
+            "More options",
+          ],
+          electricalService,
+          handleElectricalServiceSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(1)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={goToNextStepFromElectrical}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={!electricalService}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 7) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          What work do you need done?
+        </h3>
+        {renderRadioGroup(
+          [
+            "Repair problem with electrical outlets, switches, or light fixtures",
+            "Install or relocate electrical outlets, switches, or light fixtures",
+            "Install or repair ceiling or exhaust fans",
+            "Install or repair smart home system",
+          ],
+          lightsSwitchesService,
+          handleLightsSwitchesServiceSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(6)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setStep(5)}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={!lightsSwitchesService}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 8) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          What kind of electrical service do you need?
+        </h3>
+        {renderRadioGroup(
+          [
+            "Upgrade electrical panel",
+            "Repair electrical system problem (e.g. broken breaker or faulty wire)",
+            "Install, repair, or relocate electrical outlets, switches, or light fixtures",
+            "Not sure / Other",
+          ],
+          wiringPanelService,
+          handleWiringPanelServiceSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(6)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setStep(5)}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={!wiringPanelService}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 9) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          What rooms or areas need electrical work? (Select all that apply)
+        </h3>
+        {renderCheckboxGroup(
+          [
+            "Kitchen",
+            "Bathrooms",
+            "Bedrooms",
+            "Living room",
+            "Basement or attic",
+          ],
+          electricalRooms,
+          handleElectricalRoomsSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(6)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setStep(5)}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={electricalRooms.length === 0}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 10) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          Have you already bought an electric vehicle charging station?
+        </h3>
+        {renderRadioGroup(
+          ["Yes", "No"],
+          hasBoughtCharger,
+          handleHasBoughtChargerSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(6)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setStep(5)}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={!hasBoughtCharger}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 11) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          What do you need help with?
+        </h3>
+        {renderRadioGroup(
+          [
+            "Generator",
+            "Fan",
+            "Smart home system",
+            "Lightning rod/lightning protection",
+          ],
+          moreOptions,
+          handleMoreOptionsSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(6)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={goToNextStepFromMoreOptions}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={!moreOptions}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 12) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          What kind of work do you need done?
+        </h3>
+        {renderRadioGroup(
+          ["Install generator", "Repair or service generator"],
+          generatorWork,
+          handleGeneratorWorkSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(11)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setStep(5)}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={!generatorWork}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 13) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          What kind of fan do you need help with?
+        </h3>
+        {renderRadioGroup(
+          ["Ceiling fan", "Bathroom exhaust fan", "Attic or whole house fan"],
+          fanType,
+          handleFanTypeSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(11)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setStep(5)}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={!fanType}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 14) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          What do you need done with your smart home system?
+        </h3>
+        {renderRadioGroup(
+          [
+            "Install new or additional system",
+            "Repair existing system or device",
+            "Other",
+          ],
+          smartHomeWork,
+          handleSmartHomeWorkSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(11)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setStep(5)}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={!smartHomeWork}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 15) {
+    return (
+      <div className="flex flex-col items-center space-y-4">
+        <h3 className="text-xl font-semibold text-center">
+          What do you need done with your lightning protection?
+        </h3>
+        {renderRadioGroup(
+          ["Repair", "Installation", "Replace"],
+          lightningProtectionWork,
+          handleLightningProtectionWorkSelection
+        )}
+        <div className="flex gap-4 w-full pt-4">
+          <Button
+            type="button"
+            onClick={() => setStep(11)}
+            className="w-full bg-gray-300 hover:bg-gray-400 text-gray-800"
+            size="lg"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => setStep(5)}
+            className="w-full bg-primary hover:bg-primary/90"
+            size="lg"
+            disabled={!lightningProtectionWork}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <Card className="bg-[#9DDCF6]">
+    <Card>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
           <div className="grid sm:grid-cols-2 gap-4">
@@ -574,37 +1102,7 @@ export const StepForm = () => {
               </FormItem>
             )}
           />
-          <Separator />
-          <FormField
-            control={form.control}
-            name="reason"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Reason for Contact</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a reason" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="schedule-service">
-                      Schedule Service
-                    </SelectItem>
-                    <SelectItem value="question">Question</SelectItem>
-                    <SelectItem value="feedback">Feedback</SelectItem>
-                    <SelectItem value="emergency-service">
-                      Emergency Service
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
           <Separator />
           <FormField
             control={form.control}
