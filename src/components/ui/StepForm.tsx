@@ -19,6 +19,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
@@ -80,6 +89,7 @@ export const StepForm = () => {
   const [smartHomeWork, setSmartHomeWork] = useState("");
   const [lightningProtectionWork, setLightningProtectionWork] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -115,7 +125,7 @@ export const StepForm = () => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        "https://beta.libertyplumbing.us/api/send-email",
+        "https://beta.libertyplumbing.us/api/send-custom-email",
         {
           method: "POST",
           headers: {
@@ -153,11 +163,7 @@ export const StepForm = () => {
       }
 
       if (response.ok && data.success) {
-        toast({
-          title: "Message Sent!",
-          description:
-            "We've received your message and will get back to you shortly.",
-        });
+        setShowSuccessDialog(true);
         form.reset();
         setStep(1);
         setElectricalService("");
@@ -1146,11 +1152,34 @@ export const StepForm = () => {
               size="lg"
               disabled={isSubmitting}
             >
-              {isSubmitting ? <Loader2 className="animate-spin" /> : "Send now"}
+              {isSubmitting ? (
+                <>
+                  Sending...
+                  <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                </>
+              ) : (
+                "Send now"
+              )}
             </Button>
           </div>
         </form>
       </Form>
+      <AlertDialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Message Sent!</AlertDialogTitle>
+            <AlertDialogDescription>
+              Thank you for contacting Liberty Plumbing & Electricals! One of our
+              team members will be in touch with you shortly. If you require
+              immediate assistance, please don’t hesitate to call us or chat
+              with one of our agents now
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction>Close</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 };
