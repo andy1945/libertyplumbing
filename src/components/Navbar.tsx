@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import logoIcon from "@/assets/hero-plumbing.png";
+import { useOverlay } from "@/context/OverlayContext";
+import StarBorder from "@/components/StarBorder";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { showOverlay } = useOverlay();
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -103,12 +106,22 @@ export const Navbar = () => {
                 ))}
               </ul>
 
-              {/* CTA Button */}
-              <Link to="/contact" className="hidden md:block">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  Request for a free Quote! →
-                </Button>
-              </Link>
+              {/* CTA Buttons */}
+              <div className="hidden md:flex items-center gap-4">
+                <StarBorder
+                  as="button"
+                  color="cyan"
+                  speed="5s"
+                  onClick={showOverlay}
+                >
+                  Explore financing options for your project
+                </StarBorder>
+                <Link to="/contact">
+                  <Button size="lg" className="bg-primary hover:bg-primary/90">
+                    Request for a free Quote! →
+                  </Button>
+                </Link>
+              </div>
 
               {/* Mobile Menu Button */}
               <button
@@ -138,6 +151,20 @@ export const Navbar = () => {
                       </Link>
                     </li>
                   ))}
+                  <li>
+                    <StarBorder
+                      as="button"
+                      color="cyan"
+                      speed="5s"
+                      className="w-full"
+                      onClick={() => {
+                        showOverlay();
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Explore financing options for your project
+                    </StarBorder>
+                  </li>
                   <li>
                     <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
                       <Button

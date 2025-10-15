@@ -40,46 +40,49 @@ export const StepForm = () => {
     defaultValues,
   });
 
-  const onFormSubmit = useCallback(async (values: z.infer<typeof formSchema>) => {
-    console.log("Submitting...");
-    setIsSubmitting(true);
-    try {
-      const response = await fetch("/api/send-custom-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      let data;
+  const onFormSubmit = useCallback(
+    async (values: z.infer<typeof formSchema>) => {
+      console.log("Submitting...");
+      setIsSubmitting(true);
       try {
-        data = await response.json();
-      } catch {
-        data = {};
-      }
+        const response = await fetch("/api/send-custom-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
 
-      if (response.ok && data.success) {
-        setShowSuccessDialog(true);
-      } else {
+        let data;
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
+
+        if (response.ok && data.success) {
+          setShowSuccessDialog(true);
+        } else {
+          toast({
+            title: "Error",
+            description:
+              data.message || "Something went wrong. Please try again later.",
+            variant: "destructive",
+          });
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
         toast({
           title: "Error",
-          description:
-            data.message || "Something went wrong. Please try again later.",
+          description: "Something went wrong. Please try again later.",
           variant: "destructive",
         });
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast({
-        title: "Error",
-        description: "Something went wrong. Please try again later.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [form]);
+    },
+    [form]
+  );
 
   const renderRadioGroup = (
     options: string[],
@@ -379,16 +382,20 @@ export const StepForm = () => {
               <AlertDialogDescription>
                 Thank you for contacting Liberty Plumbing & Electricals! One of
                 our team members will be in touch with you shortly. If you
-                require immediate assistance, please don’t hesitate to call us
+                require immediate assistance, please don't hesitate to call us
                 or chat with one of our agents now
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogAction onClick={() => {
-                form.reset();
-                setStep(1);
-                setShowSuccessDialog(false);
-              }}>Close</AlertDialogAction>
+              <AlertDialogAction
+                onClick={() => {
+                  form.reset();
+                  setStep(1);
+                  setShowSuccessDialog(false);
+                }}
+              >
+                Close
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
