@@ -9,6 +9,7 @@ import StarBorder from "@/components/StarBorder";
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { showOverlay } = useOverlay();
+  const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -93,7 +94,11 @@ export const Navbar = () => {
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className="text-sm font-medium hover:text-primary transition-colors relative"
+                      className={`text-sm font-medium hover:text-primary transition-colors relative border-b-2  ${
+                        isActive(link.path)
+                          ? "text-primary font-bold border-primary"
+                          : "text-foreground/80 hover:text-primary border-transparent"
+                      }`}
                     >
                       {link.name}
                       {link.badge && (
