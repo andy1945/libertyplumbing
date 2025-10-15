@@ -45,13 +45,16 @@ export const StepForm = () => {
       console.log("Submitting...");
       setIsSubmitting(true);
       try {
-        const response = await fetch("/api/send-custom-email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        });
+        const response = await fetch(
+          "https://beta.libertyplumbing.us/api/send-custom-email",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(values),
+          }
+        );
 
         let data;
         try {
