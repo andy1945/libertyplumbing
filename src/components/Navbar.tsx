@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import logoIcon from "@/assets/hero-plumbing.png";
 import { useOverlay } from "@/context/OverlayContext";
-import StarBorder from "@/components/StarBorder";
+import ShinyText from "@/components/ui/ShinyTextProps";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +24,7 @@ export const Navbar = () => {
     <>
       {/* Top Banner */}
       <div className="bg-primary text-primary-foreground py-2 px-4 text-center text-sm md:text-base">
-        24/7 Emergency Plumbing & Electrical – Call +1 (267) 688-8612 Anytime!
+        24/7 Emergency Plumbing & Electrical – Call +1 (800) 481-0016 Anytime!
       </div>
 
       {/* Main Header */}
@@ -55,7 +55,7 @@ export const Navbar = () => {
                 <Phone className="h-10 w-10 text-primary" />
                 <div>
                   <p className="text-sm font-semibold">
-                    Call Us: +1 (267) 688-8612
+                    Call Us: +1 (800) 481-0016
                   </p>
                   <p className="text-xs text-muted-foreground">
                     Monday–Saturday, 8:00 AM – 8:00 PM
@@ -94,7 +94,7 @@ export const Navbar = () => {
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className={`text-sm font-medium hover:text-primary transition-colors relative border-b-2  ${
+                      className={`transition-all font-medium pb-1 border-b-2 ${
                         isActive(link.path)
                           ? "text-primary font-bold border-primary"
                           : "text-foreground/80 hover:text-primary border-transparent"
@@ -113,14 +113,19 @@ export const Navbar = () => {
 
               {/* CTA Buttons */}
               <div className="hidden md:flex items-center gap-4">
-                <StarBorder
-                  as="button"
-                  color="cyan"
-                  speed="5s"
-                  onClick={showOverlay}
-                >
-                  Explore financing options for your project
-                </StarBorder>
+                <button className="rounded-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-pink-500 hover:to-purple-600 transition-all duration-300">
+                  <ShinyText
+                    text="Explore financing options for your project"
+                    disabled={false}
+                    speed={5}
+                    className="text-white font-semibold"
+                    onClick={() => {
+                      showOverlay();
+                      setIsMenuOpen(false);
+                    }}
+                  />
+                </button>
+
                 <Link to="/contact">
                   <Button size="lg" className="bg-primary hover:bg-primary/90">
                     Request for a free Quote! →
@@ -157,18 +162,18 @@ export const Navbar = () => {
                     </li>
                   ))}
                   <li>
-                    <StarBorder
-                      as="button"
-                      color="cyan"
-                      speed="5s"
-                      className="w-full"
-                      onClick={() => {
-                        showOverlay();
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      Explore financing options for your project
-                    </StarBorder>
+                    <button className="rounded-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-pink-500 hover:to-purple-600 transition-all duration-300">
+                      <ShinyText
+                        text="Explore financing options for your project"
+                        disabled={false}
+                        speed={5}
+                        className="text-white font-semibold"
+                        onClick={() => {
+                          showOverlay();
+                          setIsMenuOpen(false);
+                        }}
+                      />
+                    </button>
                   </li>
                   <li>
                     <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
