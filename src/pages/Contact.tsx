@@ -50,10 +50,10 @@ const ContactPage = () => {
                 <div>
                   <h3 className="text-xl font-bold">Call for help:</h3>
                   <a
-                    href="tel:+12676888612"
+                    href="tel:+18004810016"
                     className="text-lg text-gray-800 hover:text-primary"
                   >
-                    +1 (267) 688-8612
+                    +1 (800) 481-0016
                   </a>
                 </div>
               </div>
@@ -101,6 +101,30 @@ const ContactPage = () => {
                     Request for a free quote now!
                   </h2>
                   <StepForm />
+                  <div className="mt-8 w-full max-w-md mx-auto bg-gray-900 rounded-xl shadow-2xl p-6 space-y-6 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/20 to-transparent"></div>
+                    <div className="flex justify-between items-center">
+                      <h2 className="text-white font-bold text-2xl tracking-wider">Hearth</h2>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                    </div>
+                    <div className="text-center pt-4">
+                      <p className="text-gray-300 text-lg">
+                        Explore 0% APR financing for your project
+                      </p>
+                    </div>
+                    <div className="pt-4 flex justify-center">
+                        <button 
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-transform hover:scale-105"
+                            onClick={() => window.open("https://app.gethearth.com/financing/56577/100041/prequalify?utm_campaign=56577&utm_content=zero_percent&utm_medium=contractor-website&utm_source=contractor&utm_term=100041", "_blank")}
+                        >
+                          See options
+                        </button>
+                    </div>
+                    <div className="flex justify-between items-center text-gray-400 text-xs">
+                        <span>**** **** **** 1234</span>
+                        <span>VALID 12/29</span>
+                    </div>
+                  </div>
                 </div>
               </ElectricBorder>
             </div>

@@ -17,6 +17,11 @@ export const Navbar = () => {
     { name: "Our Services", path: "/services" },
     { name: "FAQs", path: "/faqs" },
     { name: "Careers", path: "/careers" },
+    {
+      name: "Finance Options",
+      path: "https://app.gethearth.com/financing/56577/100041/prequalify?utm_campaign=56577&utm_content=zero_percent&utm_medium=contractor-website&utm_source=contractor&utm_term=100041",
+      external: true,
+    },
     { name: "Contact us", path: "/contact", badge: "Request!" },
   ];
 
@@ -92,21 +97,32 @@ export const Navbar = () => {
               <ul className="hidden md:flex items-center gap-6">
                 {navLinks.map((link) => (
                   <li key={link.path}>
-                    <Link
-                      to={link.path}
-                      className={`transition-all font-medium pb-1 border-b-2 ${
-                        isActive(link.path)
-                          ? "text-primary font-bold border-primary"
-                          : "text-foreground/80 hover:text-primary border-transparent"
-                      }`}
-                    >
-                      {link.name}
-                      {link.badge && (
-                        <span className="absolute -top-2 -right-12 text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded">
-                          {link.badge}
-                        </span>
-                      )}
-                    </Link>
+                    {link.external ? (
+                      <a
+                        href={link.path}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="transition-all font-medium pb-1 border-b-2 text-foreground/80 hover:text-primary border-transparent"
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link
+                        to={link.path}
+                        className={`transition-all font-medium pb-1 border-b-2 ${
+                          isActive(link.path)
+                            ? "text-primary font-bold border-primary"
+                            : "text-foreground/80 hover:text-primary border-transparent"
+                        }`}
+                      >
+                        {link.name}
+                        {link.badge && (
+                          <span className="absolute -top-2 -right-12 text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded">
+                            {link.badge}
+                          </span>
+                        )}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -152,13 +168,25 @@ export const Navbar = () => {
                 <ul className="flex flex-col gap-4 mt-4">
                   {navLinks.map((link) => (
                     <li key={link.path}>
-                      <Link
-                        to={link.path}
-                        className="text-sm font-medium hover:text-primary transition-colors block"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {link.name}
-                      </Link>
+                      {link.external ? (
+                        <a
+                          href={link.path}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium hover:text-primary transition-colors block"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {link.name}
+                        </a>
+                      ) : (
+                        <Link
+                          to={link.path}
+                          className="text-sm font-medium hover:text-primary transition-colors block"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {link.name}
+                        </Link>
+                      )}
                     </li>
                   ))}
                   <li>
