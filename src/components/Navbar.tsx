@@ -5,6 +5,7 @@ import { useState } from "react";
 import logoIcon from "@/assets/hero-plumbing.png";
 import { useOverlay } from "@/context/OverlayContext";
 import ShinyText from "@/components/ui/ShinyTextProps";
+import TelwidButton from "./ui/TelwidButton";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,7 +23,7 @@ export const Navbar = () => {
       path: "https://app.gethearth.com/financing/56577/100041/prequalify?utm_campaign=56577&utm_content=zero_percent&utm_medium=contractor-website&utm_source=contractor&utm_term=100041",
       external: true,
     },
-    { name: "Contact us", path: "/contact", badge: "Request!" },
+    { name: "Contact us", path: "/contact" },
   ];
 
   return (
@@ -143,9 +144,10 @@ export const Navbar = () => {
                 </button>
 
                 <Link to="/contact">
-                  <Button size="lg" className="bg-primary hover:bg-primary/90">
-                    Request for a free Quote! →
-                  </Button>
+                  <TelwidButton
+                    text="Request for a free Quote!"
+                    onClick={() => console.log("Get Started clicked")}
+                  />
                 </Link>
               </div>
 

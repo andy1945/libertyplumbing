@@ -5,23 +5,27 @@ import { useState, useEffect } from "react";
 import bg1 from "@/assets/bg1.jpg";
 import bg2 from "@/assets/bg2.jpg";
 import bg3 from "@/assets/bg3.jpg";
+import TelwidButton from "./ui/TelwidButton";
 
 const slides = [
   {
     title: "We Provide Quality Plumbing Services",
-    description: "We are a company providing a wide range of maintenance and many other services needed to make your life comfortable and happy. Our high-class experts fix any malfunction.",
-    buttonText: "Contact us",
+    description:
+      "We are a company providing a wide range of maintenance and many other services needed to make your life comfortable and happy. Our high-class experts fix any malfunction.",
+    buttonText: "Request for a free quote!",
     bgImage: bg1,
   },
   {
     title: "Electrical Services & maintenance",
-    description: "We provide you with the system that helps to sustain you with electricity in all the seasons throughout the year.",
+    description:
+      "We provide you with the system that helps to sustain you with electricity in all the seasons throughout the year.",
     buttonText: "Request for a free quote!",
     bgImage: bg2,
   },
   {
     title: "Expert Advice from our Experienced Staff",
-    description: "Our company offers a complete range of aftercare products and services and we are set up to deliver a service of high quality for high volume.",
+    description:
+      "Our company offers a complete range of aftercare products and services and we are set up to deliver a service of high quality for high volume.",
     buttonText: "Request for a free quote!",
     bgImage: bg3,
   },
@@ -51,7 +55,9 @@ export const Hero = () => {
           <div
             key={slide.bgImage + currentSlide}
             className={`absolute inset-0 bg-cover bg-center transition-opacity duration-3000 ${
-              index === currentSlide ? 'opacity-100 z-10 zoom-out-effect' : 'opacity-0 z-0'
+              index === currentSlide
+                ? "opacity-100 z-10 zoom-out-effect"
+                : "opacity-0 z-0"
             }`}
             style={{ backgroundImage: `url(${slide.bgImage})` }}
           />
@@ -69,10 +75,12 @@ export const Hero = () => {
               <p className="text-muted-foreground mb-6 text-base md:text-lg">
                 {slides[currentSlide].description}
               </p>
+
               <Link to="/contact">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
-                  {slides[currentSlide].buttonText}
-                </Button>
+                <TelwidButton
+                  text={slides[currentSlide].buttonText}
+                  onClick={() => console.log("Get Started clicked")}
+                />
               </Link>
             </div>
           </div>
