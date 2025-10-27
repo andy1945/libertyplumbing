@@ -10,6 +10,8 @@ import TelwidButton from "./ui/TelwidButton";
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { showOverlay } = useOverlay();
+  const financingUrl =
+    "https://app.gethearth.com/partners/liberty-plumbing-electrical?utm_campaign=56577&utm_content=blue&utm_medium=contractor-website&utm_source=contractor&utm_term=310x310";
   const isActive = (path: string) => location.pathname === path;
 
   const navLinks = [
@@ -126,16 +128,19 @@ export const Navbar = () => {
 
               {/* CTA Buttons */}
               <div className="hidden md:flex items-center gap-4">
-                <button className="rounded-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-pink-500 hover:to-purple-600 transition-all duration-300 whitespace-nowrap">
+                <button
+                  className="rounded-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-pink-500 hover:to-purple-600 transition-all duration-300 whitespace-nowrap"
+                  onClick={() => {
+                    // open financing page in a new tab
+                    window.open(financingUrl, "_blank", "noopener,noreferrer");
+                    setIsMenuOpen(false);
+                  }}
+                >
                   <ShinyText
                     text="Explore Financing Options"
                     disabled={false}
                     speed={5}
                     className="text-white font-semibold"
-                    onClick={() => {
-                      showOverlay();
-                      setIsMenuOpen(false);
-                    }}
                   />
                 </button>
 
@@ -189,16 +194,22 @@ export const Navbar = () => {
                     </li>
                   ))}
                   <li>
-                    <button className="rounded-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-pink-500 hover:to-purple-600 transition-all duration-300">
+                    <button
+                      className="rounded-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-pink-500 hover:to-purple-600 transition-all duration-300"
+                      onClick={() => {
+                        window.open(
+                          financingUrl,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+                        setIsMenuOpen(false);
+                      }}
+                    >
                       <ShinyText
                         text="Explore financing options for your project"
                         disabled={false}
                         speed={5}
                         className="text-white font-semibold"
-                        onClick={() => {
-                          showOverlay();
-                          setIsMenuOpen(false);
-                        }}
                       />
                     </button>
                   </li>
