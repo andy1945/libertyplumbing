@@ -8,7 +8,7 @@ export default function TelwidButton({
   onClick?: () => void;
 }) {
   return (
-    <button className="animated-button" onClick={onClick}>
+    <button className="animated-button whitespace-nowrap" onClick={onClick}>
       <svg
         className="arr-1"
         xmlns="http://www.w3.org/2000/svg"

@@ -19,11 +19,6 @@ export const Navbar = () => {
     { name: "Projects", path: "/projects" },
     { name: "FAQs", path: "/faqs" },
     { name: "Careers", path: "/careers" },
-    {
-      name: "Finance Options",
-      path: "https://app.gethearth.com/financing/56577/100041/prequalify?utm_campaign=56577&utm_content=zero_percent&utm_medium=contractor-website&utm_source=contractor&utm_term=100041",
-      external: true,
-    },
     { name: "Contact us", path: "/contact" },
   ];
 
@@ -96,7 +91,7 @@ export const Navbar = () => {
           <nav className="border-t">
             <div className="flex items-center justify-between py-4">
               {/* Desktop Navigation */}
-              <ul className="hidden md:flex items-center gap-6">
+              <ul className="hidden md:flex items-center gap-6 flex-nowrap">
                 {navLinks.map((link) => (
                   <li key={link.path}>
                     {link.external ? (
@@ -104,7 +99,7 @@ export const Navbar = () => {
                         href={link.path}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="transition-all font-medium pb-1 border-b-2 text-foreground/80 hover:text-primary border-transparent"
+                        className="transition-all font-medium pb-1 border-b-2 text-foreground/80 hover:text-primary border-transparent whitespace-nowrap"
                       >
                         {link.name}
                       </a>
@@ -115,7 +110,7 @@ export const Navbar = () => {
                           isActive(link.path)
                             ? "text-primary font-bold border-primary"
                             : "text-foreground/80 hover:text-primary border-transparent"
-                        }`}
+                        } whitespace-nowrap`}
                       >
                         {link.name}
                         {link.badge && (
@@ -131,9 +126,9 @@ export const Navbar = () => {
 
               {/* CTA Buttons */}
               <div className="hidden md:flex items-center gap-4">
-                <button className="rounded-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-pink-500 hover:to-purple-600 transition-all duration-300">
+                <button className="rounded-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 hover:from-pink-500 hover:to-purple-600 transition-all duration-300 whitespace-nowrap">
                   <ShinyText
-                    text="Explore financing options for your project"
+                    text="Explore Financing Options"
                     disabled={false}
                     speed={5}
                     className="text-white font-semibold"
@@ -144,7 +139,7 @@ export const Navbar = () => {
                   />
                 </button>
 
-                <Link to="/contact">
+                <Link to="/contact" className="whitespace-nowrap">
                   <TelwidButton
                     text="Request for a free Quote!"
                     onClick={() => console.log("Get Started clicked")}
@@ -156,6 +151,7 @@ export const Navbar = () => {
               <button
                 className="md:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               >
                 {isMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -168,7 +164,7 @@ export const Navbar = () => {
             {/* Mobile Navigation */}
             {isMenuOpen && (
               <div className="md:hidden pb-4 border-t">
-                <ul className="flex flex-col gap-4 mt-4">
+                <ul className="flex flex-col gap-4 mt-4 max-h-[60vh] overflow-auto">
                   {navLinks.map((link) => (
                     <li key={link.path}>
                       {link.external ? (
@@ -176,7 +172,7 @@ export const Navbar = () => {
                           href={link.path}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm font-medium hover:text-primary transition-colors block"
+                          className="text-sm font-medium hover:text-primary transition-colors block whitespace-nowrap"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           {link.name}
@@ -184,7 +180,7 @@ export const Navbar = () => {
                       ) : (
                         <Link
                           to={link.path}
-                          className="text-sm font-medium hover:text-primary transition-colors block"
+                          className="text-sm font-medium hover:text-primary transition-colors block whitespace-nowrap"
                           onClick={() => setIsMenuOpen(false)}
                         >
                           {link.name}
@@ -210,7 +206,7 @@ export const Navbar = () => {
                     <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
                       <Button
                         size="lg"
-                        className="w-full bg-primary hover:bg-primary/90"
+                        className="w-full bg-primary hover:bg-primary/90 whitespace-nowrap"
                       >
                         Request for a free Quote!
                       </Button>
