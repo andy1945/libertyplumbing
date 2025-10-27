@@ -236,8 +236,10 @@ const Projects = () => {
                               <img
                                 src={project.image}
                                 alt={`${project.title} - After`}
-                                className="w-full h-full object-cover cursor-pointer"
+                                className="w-full h-full object-cover cursor-pointer bg-muted/50"
                                 onClick={() => setSelectedImage(project.image)}
+                                loading="lazy"
+                                decoding="async"
                               />
                               <div className="absolute bottom-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-md text-sm font-semibold">
                                 After
@@ -249,10 +251,12 @@ const Projects = () => {
                               <img
                                 src={project.beforeImage}
                                 alt={`${project.title} - Before`}
-                                className="w-full h-full object-cover cursor-pointer"
+                                className="w-full h-full object-cover cursor-pointer bg-muted/50"
                                 onClick={() =>
                                   setSelectedImage(project.beforeImage!)
                                 }
+                                loading="lazy"
+                                decoding="async"
                               />
                               <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-1 rounded-md text-sm font-semibold">
                                 Before
@@ -268,8 +272,10 @@ const Projects = () => {
                         <img
                           src={project.image}
                           alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 cursor-pointer"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 cursor-pointer bg-muted/50"
                           onClick={() => setSelectedImage(project.image)}
+                          loading="lazy"
+                          decoding="async"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                       </>
