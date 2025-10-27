@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Wrench, Zap, Hammer, Plus, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import electricalService from "@/assets/electrical-service.jpg";
-import maintenanceService from "@/assets/maintenance-service.jpg";
+import plumbingService from "@/assets/projects/bathroomtubafter.png";
+import maintenanceService from "@/assets/projects/kitchenupgrade.png";
+import electricalService from "@/assets/projects/serviceafter.png";
 
 export const Services = () => {
   const services = [
@@ -16,7 +17,7 @@ export const Services = () => {
         "Drain cleaning and unclogging",
         "Water heater installation & repairs",
       ],
-      image: electricalService,
+      image: plumbingService,
     },
     {
       icon: Zap,
